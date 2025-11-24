@@ -7,12 +7,13 @@ The coroutine will collect 10 random numbers using an
 async comprehensing over async_generator, then return the 10 random numbers.
 '''
 
-from __future__ import annotations
-from typing import List
-
-async_generator = __import__('0-async_generator').async_generator
+import typing
+from importlib import import_module as using
 
 
-async def async_comprehension() -> list[float]:
-    """Collect 10 random numbers using async comprehending async_generator"""
+async_generator = using('0-async_generator').async_generator
+
+
+async def async_comprehension() -> typing.List[float]:
+    '''return num from the previous func'''
     return [num async for num in async_generator()]
