@@ -8,6 +8,6 @@ and should be annotated as a float.
 import typing
 
 
-def to_kv(k:str, v: typing.Union[int,float]) -> tuple[str, float]:
+def to_kv(k:str, v: typing.Union[int,float]) -> typing.Tuple[str, float]:
     '''convert key/value to a tuple of the key with the square of the value'''
     return (k, float(v**2))
