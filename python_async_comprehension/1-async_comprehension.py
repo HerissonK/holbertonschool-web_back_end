@@ -15,4 +15,5 @@ async_generator = using('0-async_generator').async_generator
 
 
 async def async_comprehension() -> typing.List[float]:
+    '''return num from the previous func'''
     return [num async for num in async_generator()]
