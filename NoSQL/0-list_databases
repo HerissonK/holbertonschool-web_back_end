@@ -1,4 +1,2 @@
-#!/usr/bin/env bash
-# List all databases in MongoDB
-
-sudo docker exec mongodb mongosh --quiet --eval "show dbs"
+// list all databases
+show dbs
