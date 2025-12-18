@@ -4,10 +4,7 @@ export default function handleResponseFromAPI(promise) {
       status: 200,
       body: 'success',
     }))
-    .catch(() => ({
-      status: 500,
-      body: 'error',
-    }))
+    .catch(() => new Error())
     .finally(() => {
       console.log('Got a response from the API');
     });
