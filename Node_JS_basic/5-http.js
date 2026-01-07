@@ -1,4 +1,6 @@
-const DATABASE = process.argv.slice(2)[0]; // sûr
+const http = require('http');
+
+const DATABASE = process.argv.slice(2)[0];
 
 const app = http.createServer(async (req, res) => {
   const { url } = req;
@@ -14,7 +16,7 @@ const app = http.createServer(async (req, res) => {
     res.write('This is the list of our students\n');
 
     try {
-      await countStudents(DATABASE); // console.log affiche les étudiants
+      await countStudents(DATABASE);
       res.end();
     } catch (error) {
       res.end(error.message);
