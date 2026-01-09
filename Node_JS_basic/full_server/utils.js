@@ -4,43 +4,31 @@ function readDatabase(path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8', (err, data) => {
       if (err) {
-        reject(new Error('Cannot load the database'));
+        reject(Error(err));
         return;
       }
+      const content = data.toString().split('\n');
 
-      const lines = data
-        .trim()
-        .split('\n')
-        .filter((line) => line.trim() !== '');
+      let students = content.filter((item) => item);
 
-      const students = lines.slice(1).map((line) =>
-        line.split(',').map((value) => value.trim())
-      );
-
-      const output = [];
-      output.push(`Number of students: ${students.length}`);
+      students = students.map((item) => item.split(','));
 
       const fields = {};
+      for (const i in students) {
+        if (i !== 0) {
+          if (!fields[students[i][3]]) fields[students[i][3]] = [];
 
-      students.forEach((student) => {
-        const firstname = student[0];
-        const field = student[3];
-
-        if (!fields[field]) {
-          fields[field] = [];
+          fields[students[i][3]].push(students[i][0]);
         }
-        fields[field].push(firstname);
-      });
+      }
 
-      Object.keys(fields).forEach((field) => {
-        output.push(
-          `Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`,
-        );
-      });
+      delete fields.field;
 
-      resolve(output);
+      resolve(fields);
+
+
     });
   });
 }
 
-module.exports = countStudents;
+export default readDatabase;

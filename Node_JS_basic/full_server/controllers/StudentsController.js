@@ -1,25 +1,49 @@
+import readDatabase from '../utils';
+
 class StudentsController {
-    constructor(service) {
-        this.service = service;
-    }
+  static getAllStudents(request, response, DATABASE) {
+    readDatabase(DATABASE)
+      .then((fields) => {
+        const students = [];
+        // let count = 0;
+        let msg;
 
-    async getAllStudents(request, response) {
-        try {
-            const students = await this.service.getAllStudents();
-            response.status(200).json(students);
-        } catch (error) {
-            response.status(500).json({ error: 'Cannot load the database' });
-        }
-    }
+        // for (const key of Object.keys(fields)) {
+        //   count += fields[key].length;
+        // }
 
-    async getStudentsByMajor(request, response) {
-        const major = request.params.major;
-        try {
-            const students = await this.service.getStudentsByMajor(major);
-            response.status(200).json(students);
-        } catch (error) {
-            response.status(500).json({ error: 'Cannot load the database' });
+        // students.push(`Number of students: ${count}`);
+        students.push('This is the list of our students');
+
+        for (const key of Object.keys(fields)) {
+          msg = `Number of students in ${key}: ${
+            fields[key].length
+          }. List: ${fields[key].join(', ')}`;
+
+          students.push(msg);
         }
+        response.send(200, `${students.join('\n')}`);
+      })
+      .catch(() => {
+        response.send(500, 'Cannot load the database');
+      });
+  }
+
+  static getAllStudentsByMajor(request, response, DATABASE) {
+    const { major } = request.params;
+
+    if (major !== 'CS' && major !== 'SWE') {
+      response.send(500, 'Major parameter must be CS or SWE');
+    } else {
+      readDatabase(DATABASE)
+        .then((fields) => {
+          const students = fields[major];
+
+          response.send(200, `List: ${students.join(', ')}`);
+        })
+        .catch(() => response.send(500, 'Cannot load the database'));
     }
+  }
 }
-module.exports = StudentsController;
+
+export default StudentsController;
